@@ -151,14 +151,11 @@ for line in lines:
 
 
 
-plt.figure(figsize=(10,5))
-plt.title("Distribution of images per class")
-(n, bins, patches) = plt.hist(measurements, 100)
-#print(len(n),'len(n)')
-#print(len(bins),'len(bins)')
-plt.show()
-#print(len(n),'len(n)')
-#print(len(bins),'len(bins)')
+#plt.figure(figsize=(10,5))
+#plt.title("Distribution of images per class")
+#(n, bins, patches) = plt.hist(measurements, 100)
+#plt.show()
+
 
 #for i in range(len(images)):
 #    X = images[i]
@@ -206,14 +203,6 @@ plt.show()
 #del me
 #gc.collect()
 
-plt.figure(figsize=(10,5))
-plt.title("Distribution of images per class")
-(n, bins, patches) = plt.hist(measurements, 100)
-#print(n,'n')
-#print(bins,'bins')
-plt.show()
-
-
 aditional_file_names = []
 aditional_measurements = []
 
@@ -259,12 +248,10 @@ file_names = file_names + aditional_file_names
 measurements = measurements + aditional_measurements
 
 
-plt.figure(figsize=(10,5))
-plt.title("Distribution of images per class")
-(n, bins, patches) = plt.hist(measurements, 100)
-#print(n,'n')
-#print(bins,'bins')
-plt.show()
+#plt.figure(figsize=(10,5))
+#plt.title("Distribution of images per class")
+#(n, bins, patches) = plt.hist(measurements, 100)
+#plt.show()
 
 #images = np.array(images)
 
@@ -425,13 +412,13 @@ print('Finished correctly')
 print(history_object.history.keys())
 
 ### plot the training and validation loss for each epoch
-plt.plot(history_object.history['loss'])
-plt.plot(history_object.history['val_loss'])
-plt.title('model mean squared error loss')
-plt.ylabel('mean squared error loss')
-plt.xlabel('epoch')
-plt.legend(['training set', 'validation set'], loc='upper right')
-plt.show()
+#plt.plot(history_object.history['loss'])
+#plt.plot(history_object.history['val_loss'])
+#plt.title('model mean squared error loss')
+#plt.ylabel('mean squared error loss')
+#plt.xlabel('epoch')
+#plt.legend(['training set', 'validation set'], loc='upper right')
+#plt.show()
 
 
 
