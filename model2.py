@@ -7,6 +7,13 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 import gc
 
+def n_completed(n_Count):
+    completed = True
+    for count in n_Count:
+        if (count > 0):
+            completed = False
+            break
+    return completed
 
 def keep_prob(n,bins,steering):
     for i in range(len(n)):
@@ -23,7 +30,7 @@ def act_n_hist(n,bins,steering):
         act_bin = bins[i+1]
         if steering <= act_bin:
             break
-    return act_n
+    return act_n,i
 
 def add_random_shadow(image):
     top_y = 320*np.random.uniform()
@@ -88,8 +95,8 @@ first_line=True;
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 filename_train_log = base_dir + '/data2/driving_log.csv'
-filename_train_path = base_dir + '/data2/IMG/'
 filename_valid_log = base_dir + '/data2/driving_log.csv'
+filename_train_path = base_dir + '/data2/IMG/'
 filename_valid_path = base_dir + '/data2/IMG/'
 
 
@@ -151,10 +158,10 @@ for line in lines:
 
 
 
-#plt.figure(figsize=(10,5))
-#plt.title("Distribution of images per class")
-#(n, bins, patches) = plt.hist(measurements, 100)
-#plt.show()
+plt.figure(figsize=(10,5))
+plt.title("Distribution of images per class")
+(n, bins, patches) = plt.hist(measurements, 100)
+plt.show()
 
 n, bins = np.histogram(measurements, 100)
 
@@ -204,25 +211,60 @@ n, bins = np.histogram(measurements, 100)
 #del me
 #gc.collect()
 
+
+### OP_0
 aditional_file_names = []
 aditional_measurements = []
 
-for i in range(len(file_names)):
-    f = file_names[i]
-    y = measurements[i]
-    act_n = act_n_hist(n,bins,y)
-    if act_n > 0:
-        #act_n = ((50*(1-abs(y))+100-act_n)/act_n)
-        #act_n = (max(n)/act_n)-1
-        act_n = ((max(n)-150-act_n)/act_n)
-        act_n = math.floor(act_n)
-        #act_n = math.ceil(act_n)
+n_Count = [1 for i in range(len(n))]
+n_Count = n_Count * max(n)
+n_Count = n_Count - n
 
-        if act_n > 0:
-            for j in range(abs(act_n)):   
+while not(n_completed(n_Count)): 
+    for i in range(len(file_names)):
+        f = file_names[i]
+        y = measurements[i]
+        act_n,ind = act_n_hist(n,bins,y)
+        if n_Count[ind] > 1:           
+            n_times = ((n_Count[ind]-act_n)/act_n)
+            n_times = math.floor(n_times)+10
+            for j in range(n_times): 
                 aditional_file_names.append(f)    
-                aditional_measurements.append(y)  
+                aditional_measurements.append(y)
+            n_Count[ind] = n_Count[ind] - n_times
+        else: 
+            if n_Count[ind] > 0:
+                n_Count[ind] = n_Count[ind] - 1
+                aditional_file_names.append(f)    
+                aditional_measurements.append(y)
+    print(n_Count)
 
+
+        
+####                
+### OP_1
+#aditional_file_names = []
+#aditional_measurements = []
+
+#for i in range(len(file_names)):
+#    f = file_names[i]
+#    y = measurements[i]
+#    act_n = act_n_hist(n,bins,y)
+#    if act_n > 0:
+#        #act_n = ((50*(1-abs(y))+100-act_n)/act_n)
+#        #act_n = (max(n)/act_n)-1
+#        act_n = ((max(n)-150-act_n)/act_n)
+#        act_n = math.floor(act_n)
+#        #act_n = math.ceil(act_n)
+#
+#        if act_n > 0:
+#            for j in range(abs(act_n)):   
+#                aditional_file_names.append(f)    
+#                aditional_measurements.append(y)  
+
+####                
+                
+                
 #for X, y in zip(X_train,y_train):
 #    prob = keep_prob(n,bins,y)
 #    if prob > 0.5:#np.random.uniform():
@@ -249,10 +291,10 @@ file_names = file_names + aditional_file_names
 measurements = measurements + aditional_measurements
 
 
-#plt.figure(figsize=(10,5))
-#plt.title("Distribution of images per class")
-#(n, bins, patches) = plt.hist(measurements, 100)
-#plt.show()
+plt.figure(figsize=(10,5))
+plt.title("Distribution of images per class")
+(n, bins, patches) = plt.hist(measurements, 100)
+plt.show()
 
 n, bins = np.histogram(measurements, 100)
 
@@ -401,7 +443,7 @@ history_object = model.fit_generator(train_generator, samples_per_epoch=
             len(measurements), validation_data=validation_generator,
             nb_val_samples=8030, nb_epoch=5, verbose=1)
     #len(X_valid)
-model.save('modelE215l2001.h5')
+model.save('model.h5')
 print('Finished correctly')
 
 
@@ -422,6 +464,5 @@ print(history_object.history.keys())
 #plt.xlabel('epoch')
 #plt.legend(['training set', 'validation set'], loc='upper right')
 #plt.show()
-
 
 
