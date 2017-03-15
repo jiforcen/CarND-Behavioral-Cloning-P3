@@ -87,9 +87,9 @@ lines= []
 first_line=True;
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-filename_train_log = base_dir + '/data copia/driving_log.csv'
+filename_train_log = base_dir + '/data/driving_log.csv'
 filename_valid_log = base_dir + '/data2/driving_log.csv'
-filename_train_path = base_dir + '/data copia/IMG/'
+filename_train_path = base_dir + '/data/IMG/'
 filename_valid_path = base_dir + '/data2/IMG/'
 
 
