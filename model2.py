@@ -153,9 +153,10 @@ for line in lines:
 
 #plt.figure(figsize=(10,5))
 #plt.title("Distribution of images per class")
-(n, bins, patches) = plt.hist(measurements, 100)
+#(n, bins, patches) = plt.hist(measurements, 100)
 #plt.show()
 
+n, bins = np.histogram(measurements, 100)
 
 #for i in range(len(images)):
 #    X = images[i]
@@ -250,8 +251,10 @@ measurements = measurements + aditional_measurements
 
 #plt.figure(figsize=(10,5))
 #plt.title("Distribution of images per class")
-(n, bins, patches) = plt.hist(measurements, 100)
+#(n, bins, patches) = plt.hist(measurements, 100)
 #plt.show()
+
+n, bins = np.histogram(measurements, 100)
 
 #images = np.array(images)
 
