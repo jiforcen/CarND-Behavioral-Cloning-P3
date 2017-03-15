@@ -153,7 +153,7 @@ for line in lines:
 
 #plt.figure(figsize=(10,5))
 #plt.title("Distribution of images per class")
-#(n, bins, patches) = plt.hist(measurements, 100)
+(n, bins, patches) = plt.hist(measurements, 100)
 #plt.show()
 
 
@@ -250,7 +250,7 @@ measurements = measurements + aditional_measurements
 
 #plt.figure(figsize=(10,5))
 #plt.title("Distribution of images per class")
-#(n, bins, patches) = plt.hist(measurements, 100)
+(n, bins, patches) = plt.hist(measurements, 100)
 #plt.show()
 
 #images = np.array(images)
