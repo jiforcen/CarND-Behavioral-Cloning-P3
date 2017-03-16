@@ -78,7 +78,7 @@ def move_image(image,measurement):
     return image,measurement
 
 
-#En todas ecualizar y shadow
+#En todas ecualizar */shadow
 
 #Brightness augmentation
 
