@@ -391,7 +391,7 @@ def generator_valid(batch_size):
         
 # compile and train the model using the generator function
 
-train_generator = generator_train(file_names, measurements, size_original, batch_size=32)
+train_generator = generator_train(file_names, measurements, size_original, batch_size=512)
 validation_generator = generator_valid(batch_size=512)
 
 
