@@ -157,12 +157,12 @@ for line in lines:
 #measurements = np.array(measurements)
 
 
-
+'''
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-
+'''
 n, bins = np.histogram(measurements, 100)
 
 #for i in range(len(images)):
@@ -216,9 +216,12 @@ n, bins = np.histogram(measurements, 100)
 aditional_file_names = []
 aditional_measurements = []
 
-n_Count = [1 for i in range(len(n))]
-n_Count = n_Count * max(n)
-n_Count = n_Count - n
+n_Count = [max(n) for i in range(len(n))]
+for i in range(len(n_Count)):
+    if n[i]>0:
+        n_Count[i] = n_Count[i] - n[i]
+    else:
+        n_Count[i] = 0
 
 while not(n_completed(n_Count)): 
     for i in range(len(file_names)):
@@ -237,7 +240,7 @@ while not(n_completed(n_Count)):
                 n_Count[ind] = n_Count[ind] - 1
                 aditional_file_names.append(f)    
                 aditional_measurements.append(y)
-    print(n_Count)
+    #print(n_Count)
 
 
         
@@ -290,12 +293,12 @@ aditional_file_names, aditional_measurements = shuffle(aditional_file_names, adi
 file_names = file_names + aditional_file_names
 measurements = measurements + aditional_measurements
 
-
+'''
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-
+'''
 n, bins = np.histogram(measurements, 100)
 
 #images = np.array(images)
@@ -312,7 +315,7 @@ import cv2
 import numpy as np
 import sklearn
 
-def generator_train(file_names, measurements, size_original, batch_size=32):
+def generator_train(file_names, measurements, size_original, batch_size):
     current_path = filename_train_path
     num_samples = len(file_names)
     while 1: # Loop forever so the generator never terminates
@@ -341,6 +344,8 @@ def generator_train(file_names, measurements, size_original, batch_size=32):
                 image = cv2.cvtColor(image,cv2.COLOR_HSV2RGB)
                 image = cv2.cvtColor(image,cv2.COLOR_RGB2YUV)
                 image[:,:,0] = cv2.equalizeHist(image[:,:,0])
+                image = image[70:136,:,:]
+                image = cv2.resize(image,(200, 66), interpolation = cv2.INTER_AREA)
                 im.append(image)
                 me.append(measurement)
 
@@ -349,7 +354,7 @@ def generator_train(file_names, measurements, size_original, batch_size=32):
             yield sklearn.utils.shuffle(X, y)
 
             
-def generator_valid(batch_size=32):
+def generator_valid(batch_size):
     lines= []
     first_line=True;
     with open(filename_valid_log) as csvfile:
@@ -374,6 +379,8 @@ def generator_valid(batch_size=32):
                 #img_center = cv2.cvtColor(img_center,cv2.COLOR_BGR2RGB)
                 img_center = cv2.cvtColor(img_center,cv2.COLOR_BGR2YUV)
                 img_center[:,:,0] = cv2.equalizeHist(img_center[:,:,0])
+                img_center = img_center[70:136,:,:]
+                img_center = cv2.resize(img_center,(200, 66), interpolation = cv2.INTER_AREA)
                 im.append(img_center)   
                 me.append(steering_center)
 
@@ -385,7 +392,7 @@ def generator_valid(batch_size=32):
 # compile and train the model using the generator function
 
 train_generator = generator_train(file_names, measurements, size_original, batch_size=32)
-validation_generator = generator_valid(batch_size=32)
+validation_generator = generator_valid(batch_size=512)
 
 
 from keras.models import Sequential
@@ -398,38 +405,40 @@ from keras.regularizers import l2
 
 
 model = Sequential()
+model.add(Lambda(lambda x: x/127.5 - 0.5, input_shape=(66,200,3)))
+#model.add(Cropping2D(cropping=((70,25), (0,0))))
+model.add(Convolution2D(24, 5, 5, subsample=(2,2), activation="relu"))
+model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation="relu"))
+model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation="relu"))
+model.add(Convolution2D(64, 3, 3, activation="relu"))
+model.add(Convolution2D(64, 3, 3, activation="relu"))
+model.add(Flatten())
+model.add(Dense(100))
+model.add(Dropout(0.2))
+model.add(Dense(50))
+model.add(Dropout(0.2))
+model.add(Dense(10))
+model.add(Dropout(0.2))
+model.add(Dense(1))
+
+'''
+model = Sequential()
 model.add(Lambda(lambda x: x/127.5 - 0.5, input_shape=(160,320,3)))
 model.add(Cropping2D(cropping=((70,25), (0,0))))
 model.add(Convolution2D(24, 5, 5,subsample=(2,2), W_regularizer = l2(.005),activation="relu"))
-#model.add(Activation('relu'))
 model.add(Convolution2D(36, 5, 5,subsample=(2,2), W_regularizer = l2(.005),activation="relu"))
 model.add(Convolution2D(48, 5, 5,subsample=(2,2), W_regularizer = l2(.005),activation="relu"))
 model.add(Convolution2D(64, 3, 3, W_regularizer = l2(.005),activation="relu"))
 model.add(Convolution2D(64, 3, 3, W_regularizer = l2(.005),activation="relu"))
 model.add(Flatten())
 model.add(Dense(100, W_regularizer = l2(.005)))
+model.add(Dropout(0.2))
 model.add(Dense(50, W_regularizer = l2(.005)))
+model.add(Dropout(0.2))
 model.add(Dense(10, W_regularizer = l2(.005)))
+model.add(Dropout(0.2))
 model.add(Dense(1))
-
-#model = Sequential()
-#model.add(Lambda(lambda x: x/127.5 - 0.5, input_shape=(160,320,3)))
-#model.add(Cropping2D(cropping=((70,25), (0,0))))
-#model.add(Convolution2D(24, 5, 5,subsample=(2,2),activation="relu"))
-#model.add(Convolution2D(36, 5, 5,subsample=(2,2),activation="relu"))
-#model.add(Convolution2D(48, 5, 5,subsample=(2,2),activation="relu"))
-#model.add(Convolution2D(64, 3, 3,activation="relu"))
-#model.add(Convolution2D(64, 3, 3,activation="relu"))
-#model.add(Flatten())
-#model.add(Dense(100))
-#model.add(Dense(50))
-#model.add(Dense(10))
-#model.add(Dense(1))
-
-#model = Sequential()
-#model.add(Lambda(lambda x: x/255.0 - 0.5,input_shape=(160,320,3)))
-#model.add(Flatten())
-#model.add(Dense(1))
+'''
 
 model.compile(loss = 'mse', optimizer = 'adam')
 
