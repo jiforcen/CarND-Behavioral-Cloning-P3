@@ -94,9 +94,9 @@ lines= []
 first_line=True;
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-filename_train_log = base_dir + '/data copia/driving_log.csv'
+filename_train_log = base_dir + '/data/driving_log.csv'
 filename_valid_log = base_dir + '/data2/driving_log.csv'
-filename_train_path = base_dir + '/data copia/IMG/'
+filename_train_path = base_dir + '/data/IMG/'
 filename_valid_path = base_dir + '/data2/IMG/'
 
 
@@ -215,14 +215,22 @@ n, bins = np.histogram(measurements, 100)
 ### OP_0
 aditional_file_names = []
 aditional_measurements = []
-
+'''
 n_Count = [0.75*max(n) for i in range(len(n))]
 for i in range(len(n_Count)):
     if n[i]>0:
         n_Count[i] = n_Count[i] - n[i]
     else:
         n_Count[i] = 0
+'''
 
+n_Count = [0.9*max(n) for i in range(len(n))]
+for i in range(len(n_Count)):
+    if n[i]>0:
+        n_Count[i] = n_Count[i] - ((i-(len(n)/2))/(len(n)/2))*((i-(len(n)/2))/(len(n)/2))*n_Count[i]*0.1 - n[i]
+    else:
+        n_Count[i] = 0
+        
 while not(n_completed(n_Count)): 
     for i in range(len(file_names)):
         f = file_names[i]
