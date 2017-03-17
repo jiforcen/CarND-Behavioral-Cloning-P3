@@ -94,23 +94,26 @@ lines= []
 first_line=True;
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-filename_train_log = base_dir + '/data/driving_log.csv'
+filename_train_log = base_dir + '/data copia/driving_log.csv'
+filename_train_path = base_dir + '/data copia/IMG/'
 filename_valid_log = base_dir + '/data2/driving_log.csv'
-filename_train_path = base_dir + '/data/IMG/'
 filename_valid_path = base_dir + '/data2/IMG/'
-
+filename_train_log = base_dir + '/data/driving_log.csv'
+filename_train_path = base_dir + '/data/IMG/'
 
 with open(filename_train_log) as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
-        if first_line:
-            first_line = False
-        else:
-            lines.append(line)
+        #if first_line:
+        #    first_line = False
+        #else:
+        lines.append(line)
 print(len(lines))
 
 file_names = []
 measurements = []
+flip = []
+
 correction = 0.1 # Estimate angle correction for side cameras
 
 #print(len(images))
@@ -135,34 +138,39 @@ for line in lines:
     steering_center = float(line[3])   
     steering_left = steering_center + correction
     steering_right = steering_center - correction
-    #flip_steering_center = -steering_center   
-    #flip_steering_left = -steering_left
-    #flip_steering_right = -steering_right
+
     if ((steering_center>0.001)or(steering_center<-0.001)):
         file_names.append(filename_center)
         file_names.append(filename_left)
         file_names.append(filename_right)
-        #images.append(flip_img_center)
-        #images.append(flip_img_left)
-        #images.append(flip_img_right)
+        file_names.append(filename_center)
+        file_names.append(filename_left)
+        file_names.append(filename_right)
         
+        flip.append(0)
+        flip.append(0)
+        flip.append(0)
+        flip.append(1)
+        flip.append(1)
+        flip.append(1)
+               
         measurements.append(steering_center)
         measurements.append(steering_left)
         measurements.append(steering_right)
-        #measurements.append(flip_steering_center)
-        #measurements.append(flip_steering_left)
-        #measurements.append(flip_steering_right) 
+        measurements.append(-steering_center)
+        measurements.append(-steering_left)
+        measurements.append(-steering_right)
 
 #images = np.array(images)
 #measurements = np.array(measurements)
 
 
-'''
+
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-'''
+
 n, bins = np.histogram(measurements, 100)
 
 #for i in range(len(images)):
@@ -215,19 +223,20 @@ n, bins = np.histogram(measurements, 100)
 ### OP_0
 aditional_file_names = []
 aditional_measurements = []
-'''
+aditional_flip = []
+
 n_Count = [0.75*max(n) for i in range(len(n))]
 for i in range(len(n_Count)):
     if n[i]>0:
         n_Count[i] = n_Count[i] - n[i]
     else:
         n_Count[i] = 0
-'''
+
 
 n_Count = [0.9*max(n) for i in range(len(n))]
 for i in range(len(n_Count)):
     if n[i]>0:
-        n_Count[i] = n_Count[i] - ((i-(len(n)/2))/(len(n)/2))*((i-(len(n)/2))/(len(n)/2))*n_Count[i]*0.1 - n[i]
+        n_Count[i] = n_Count[i] - ((i-(len(n)/2))/(len(n)/2))*((i-(len(n)/2))/(len(n)/2))*n_Count[i]*0.05 - n[i]
     else:
         n_Count[i] = 0
         
@@ -235,6 +244,7 @@ while not(n_completed(n_Count)):
     for i in range(len(file_names)):
         f = file_names[i]
         y = measurements[i]
+        fl = flip[i]
         act_n,ind = act_n_hist(n,bins,y)
         if n_Count[ind] > 1:           
             n_times = ((n_Count[ind]-act_n)/act_n)
@@ -242,12 +252,15 @@ while not(n_completed(n_Count)):
             for j in range(n_times): 
                 aditional_file_names.append(f)    
                 aditional_measurements.append(y)
+                aditional_flip.append(fl)
             n_Count[ind] = n_Count[ind] - n_times
         else: 
             if n_Count[ind] > 0:
                 n_Count[ind] = n_Count[ind] - 1
                 aditional_file_names.append(f)    
                 aditional_measurements.append(y)
+                aditional_flip.append(fl)
+
     #print(n_Count)
 
 
@@ -295,18 +308,18 @@ while not(n_completed(n_Count)):
 
 size_original = len(file_names)
 print(size_original)
-file_names, measurements = shuffle(file_names, measurements)
-aditional_file_names, aditional_measurements = shuffle(aditional_file_names, aditional_measurements)
+file_names, measurements, flip = shuffle(file_names, measurements, flip)
+aditional_file_names, aditional_measurements,aditional_flip = shuffle(aditional_file_names, aditional_measurements,aditional_flip)
 
 file_names = file_names + aditional_file_names
 measurements = measurements + aditional_measurements
+flip = flip + aditional_flip
 
-'''
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-'''
+
 n, bins = np.histogram(measurements, 100)
 
 #images = np.array(images)
@@ -323,7 +336,7 @@ import cv2
 import numpy as np
 import sklearn
 
-def generator_train(file_names, measurements, size_original, batch_size):
+def generator_train(file_names, measurements, flip, size_original, batch_size):
     current_path = filename_train_path
     num_samples = len(file_names)
     while 1: # Loop forever so the generator never terminates
@@ -331,19 +344,23 @@ def generator_train(file_names, measurements, size_original, batch_size):
         for offset in range(0, num_samples, batch_size):
             batch_file_names = file_names[offset:offset+batch_size]
             batch_measurements = measurements[offset:offset+batch_size]
+            batch_flip = flip[offset:offset+batch_size]
+
             im = []
             me = []
-            for filename,measurement in zip(batch_file_names,batch_measurements):
+            for filename,measurement,fl in zip(batch_file_names,batch_measurements,batch_flip):
                 image = cv2.imread(current_path + filename)
                 #image[:,:,0] = cv2.equalizeHist(image[:,:,0])       
                 image = cv2.cvtColor(image,cv2.COLOR_BGR2HSV)
-                                   
+                if fl:
+                    image = cv2.flip(image,1)
+               
                 if offset > size_original:
                     if (np.random.uniform())>0.5:
                         image = augment_image_brightness(image)
                     if (np.random.uniform())>0.6:
                         image = add_random_shadow(image)
-                    #image,measurement = move_image(image,measurement)              
+                    image,measurement = move_image(image,measurement)              
                 #else:
                     #if (np.random.uniform())>0.8:
                         #image = augment_image_brightness(image)
@@ -399,7 +416,7 @@ def generator_valid(batch_size):
         
 # compile and train the model using the generator function
 
-train_generator = generator_train(file_names, measurements, size_original, batch_size=256)
+train_generator = generator_train(file_names, measurements, flip, size_original, batch_size=256)
 validation_generator = generator_valid(batch_size=256)
 
 
@@ -416,17 +433,22 @@ model = Sequential()
 model.add(Lambda(lambda x: x/127.5 - 0.5, input_shape=(66,200,3)))
 #model.add(Cropping2D(cropping=((70,25), (0,0))))
 model.add(Convolution2D(24, 5, 5, subsample=(2,2), activation="relu"))
+model.add(Dropout(0.2))
 model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation="relu"))
+model.add(Dropout(0.2))
 model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation="relu"))
+model.add(Dropout(0.2))
 model.add(Convolution2D(64, 3, 3, activation="relu"))
+model.add(Dropout(0.2))
 model.add(Convolution2D(64, 3, 3, activation="relu"))
+model.add(Dropout(0.2))
 model.add(Flatten())
 model.add(Dense(100))
-model.add(Dropout(0.2))
+model.add(Dropout(0.1))
 model.add(Dense(50))
-model.add(Dropout(0.2))
+model.add(Dropout(0.1))
 model.add(Dense(10))
-model.add(Dropout(0.2))
+model.add(Dropout(0.1))
 model.add(Dense(1))
 
 '''
@@ -458,7 +480,7 @@ model.compile(loss = 'mse', optimizer = 'adam')
 
 history_object = model.fit_generator(train_generator, samples_per_epoch=
             len(measurements), validation_data=validation_generator,
-            nb_val_samples=8030, nb_epoch=5, verbose=1)
+            nb_val_samples=8030, nb_epoch=15, verbose=1)
     #len(X_valid)
 model.save('model.h5')
 print('Finished correctly')
