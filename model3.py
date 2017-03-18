@@ -341,7 +341,7 @@ def generator_train(file_names, measurements, flip, batch_size):
                 if ((fl==2)or(fl==4)):
                     image = cv2.flip(image,1)
                
-                if ((fl==3)or(fl==4))::
+                if ((fl==3)or(fl==4)):
                     if (np.random.uniform())>0.5:
                         image = augment_image_brightness(image)
                     if (np.random.uniform())>0.6:
@@ -379,7 +379,7 @@ def generator_valid(file_names, measurements, flip, batch_size):
                 if ((fl==2)or(fl==4)):
                     image = cv2.flip(image,1)
                
-                if ((fl==3)or(fl==4))::
+                if ((fl==3)or(fl==4)):
                     if (np.random.uniform())>0.5:
                         image = augment_image_brightness(image)
                     if (np.random.uniform())>0.6:
