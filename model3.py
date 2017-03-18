@@ -496,7 +496,7 @@ model.compile(loss = 'mse', optimizer = 'adam')
 
 history_object = model.fit_generator(train_generator, samples_per_epoch=
             len(measurements), validation_data=validation_generator,
-            nb_val_samples=8030, nb_epoch=5, verbose=1)
+            nb_val_samples=8030, nb_epoch=15, verbose=1)
     #len(X_valid)
 model.save('model.h5')
 print('Finished correctly')
