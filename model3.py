@@ -299,8 +299,6 @@ while not(n_completed(n_Count)):
 #X_train = np.array(images)
 #y_train = np.array(measurements)
 
-print(size_original)
-
 file_names = file_names + aditional_file_names
 measurements = measurements + aditional_measurements
 flip = flip + aditional_flip
