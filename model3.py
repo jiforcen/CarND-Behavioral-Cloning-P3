@@ -73,7 +73,7 @@ def move_image(image,measurement):
     rows,cols,ch = image.shape
     M = np.float32([[1,0,tr_x],[0,1,tr_y]]) 
     image = cv2.warpAffine(image,M,(cols,rows))
-    measurement = measurement + tr_x*0.001
+    measurement = measurement + tr_x*0.0001
 
     return image,measurement
 
@@ -227,12 +227,13 @@ for i in range(len(n_Count)):
 
 
 n_Count = [0.9*max(n) for i in range(len(n))]
+'''
 for i in range(len(n_Count)):
     if n[i]>0:
         n_Count[i] = n_Count[i] - ((i-(len(n)/2))/(len(n)/2))*((i-(len(n)/2))/(len(n)/2))*n_Count[i]*0.05 - n[i]
     else:
         n_Count[i] = 0
-        
+'''    
 while not(n_completed(n_Count)): 
     for i in range(len(file_names)):
         f = file_names[i]
@@ -496,7 +497,7 @@ model.compile(loss = 'mse', optimizer = 'adam')
 
 history_object = model.fit_generator(train_generator, samples_per_epoch=
             len(measurements), validation_data=validation_generator,
-            nb_val_samples=8030, nb_epoch=15, verbose=1)
+            nb_val_samples=8030, nb_epoch=5, verbose=1)
     #len(X_valid)
 model.save('model.h5')
 print('Finished correctly')
