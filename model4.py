@@ -116,8 +116,8 @@ lines= []
 base_dir = os.path.dirname(os.path.abspath(__file__))
 filename_train_log = base_dir + '/data copia/driving_log.csv'
 filename_train_path = base_dir + '/data copia/IMG/'
-filename_train_log = base_dir + '/data/driving_log.csv'
-filename_train_path = base_dir + '/data/IMG/'
+#filename_train_log = base_dir + '/data/driving_log.csv'
+#filename_train_path = base_dir + '/data/IMG/'
 
 with open(filename_train_log) as csvfile:
     reader = csv.reader(csvfile)
@@ -395,7 +395,7 @@ history_object = model.fit_generator(train_generator, samples_per_epoch=
             len(measurements), validation_data=validation_generator,
             nb_val_samples=8030, nb_epoch=50, verbose=1)
 
-model.save('model.h5')
+model.save('model5.h5')
 print('Finished correctly')
 
 ### print the keys contained in the history object
