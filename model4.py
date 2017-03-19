@@ -304,7 +304,7 @@ def generator_train(file_names, measurements, info, batch_size):
                     if (np.random.uniform())>0.6:
                         image = random_shadow(image)
                 
-                image[:,:,0] = cv2.equalizeHist(image[:,:,2])
+                image[:,:,2] = cv2.equalizeHist(image[:,:,2])
 
                 if ((inf==3)or(inf==4)):
                     image,measurement = random_move(image,measurement)              
@@ -343,7 +343,7 @@ def generator_valid(file_names, measurements, info, batch_size):
                     if (np.random.uniform())>0.6:
                         image = random_shadow(image)
                 
-                image[:,:,0] = cv2.equalizeHist(image[:,:,2])
+                image[:,:,2] = cv2.equalizeHist(image[:,:,2])
 
                 if ((inf==3)or(inf==4)):
                     image,measurement = random_move(image,measurement)              
