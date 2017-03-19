@@ -22,6 +22,9 @@ The goals / steps of this project are the following:
 [image5]: ./write_up_images/imagePostB.png ""
 [image6]: ./write_up_images/imagePrevM.png "Image"
 [image7]: ./write_up_images/imagePostM.png "Image"
+[image8]: ./write_up_images/dataset1.png ""
+[image9]: ./write_up_images/dataset2.png "Image"
+[image10]: ./write_up_images/dataset3.png "Image"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -64,7 +67,7 @@ Car tend to go out off the track until good aproach was applied. Balanced data w
 
 Also all images were equlized before fed to the neural network
 
-Different images sets were used to train the model during the set-up proccess. 
+Different images sets were used to train the model during the set-up process. 
 First data acquired manually was used to train the model and data from udacity was used for validation. Later when data of track 2 was acquired, all data was split into train dataset and validation dataset because udacity data doesn´t contain data of track 2 so is not a good validation data for both tracks.
 
 Lot of driving test were made to check how well the car was driving around both tracks. There were a few spots where the vehicle fell off the track to improve the driving behavior in these cases data of these areas were collected.
@@ -103,7 +106,7 @@ My model consists of a convolution neural network inspired in Nvidia neural netw
 | Dropout					|	0.2	dropout 				|
 | Fully connected	layer	| input 10, output 1.        				|
 
-Images are cropped and equalized before fed into the model, also data is normalized in the model using a Keras lambda layer (code line 18). 
+Images are cropped and equalized before fed into the model, also data is normalized in the model using a Keras lambda layer (code line !!). 
 After each convolution layer a RELU layer is included to introduce nonlinearity, also Dropout layer is introduced to prevent overfitting.
 
 ####2. Attempts to reduce overfitting in the model
@@ -124,32 +127,43 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from sides of the road and driving in counter sense.
 Driving data was acquired in both tracks driving at speed similar to the desired speed in the test.
 
-For details about how I created the training data, see the next section.
+Data was preprocesed in generator to avoid use big amout of memory. So names of filenames with their measurements and aditional information is stored during the process of obtain a balanced dataset (code line !!). This info will be provided to the generator to give images to the model during the train process.
 
-As I told before, one of the keys of this project is having a balanced dataset.
+To augment data from laps, we use also side cameras adding 0.1 for left images and substracting for right images. Also flipping these images and changing the sign of its measuremet we obtain three images more. So we have 6 images per each position of the car during the learning process.
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+As I told before, one of the keys of this project is having a balanced dataset. When we drive the car we tend to stay in th center of the road so our dataset will have a lot of images with measurements near to 0. So we use images with measurement  higher than 0.001 and lower than -0.001. After this we have the next dataset:
+![alt text][image8]
 
-![alt text][image2]
+As we can see our dataset after removing center images is not balanced still. At this point two strategies were tested, one augmentate data to have balanced dataset and remove some center images and augmentate data to have a balanced dataset. In both we have a balanced dataset but in the second we have less images. Second solution was selected because these amount of images was enough to train the model and the trainning process was much faster.
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+In the next figure we can see the histogram after remove images when exceded 500 images per bin.
+![alt text][image9]
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
+Finally after augmentate data in bins which have less images we obtain the next histogram:
+![alt text][image10]
 
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-
+To augment the dataset, we use three different methods, firs move images, second augmentate brightness and third add random shadows, this third method was inpired in this posts:
 [Vivek Yadav](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb)
+-
 [Jeremy Shannon](https://medium.com/udacity/udacity-self-driving-car-nanodegree-project-3-behavioral-cloning-446461b7c7f9#.mh6z0fpez)
+.
 
+First method consist in move image with a displacement. It can be vertical and horizontal. When horizontal displacement is added is necesary to compensate the measuremt. Experimentaly a value of 0.0001 per pixel was used. In the next images we can see an image displaced compared with the previous one. (code line !!)
 
 ![alt text][image6]
 ![alt text][image7]
 
+Second method is commonly used in image augmentation and consists in vary the brightness of the image. We can see an image with different brightnes compared with the previous one. (code line !!)
+
+![alt text][image4]
+![alt text][image5]
+
+This third method consists in add to the image random shadows these is also useful to help the model to generalize. We can see an image with different brightnes compared with the previous one. (code line !!)
+
+![alt text][image2]
+![alt text][image3]
+
+This third methods are applied one aditional image is needed for image augmentation. Variation in each step is randomly selected.
 Etc ....
 
 After the collection process, I had X number of data points. I then preprocessed this data by ...
