@@ -59,13 +59,11 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
 In the begining models like LeNet were tested, but quite forward Nvidia network architecture was tested. It was necesary add Dropout layers (Also L2 regularization was tested) to prevent overfitting.
 
 Car tend to go out off the track until good aproach was applied. Balanced data was one of the keys of the project, because in data aquisition are too much images with steering near to 0, if we train the model with this data we will have a biased model, probably with a good value in error loss, but bad in driving.
 
-Also all images were equlized before fed to the neural network
+Also all images were equlized before fed to the neural network.
 
 Different images sets were used to train the model during the set-up process. 
 First data acquired manually was used to train the model and data from udacity was used for validation. Later when data of track 2 was acquired, all data was split into train dataset and validation dataset because udacity data doesn´t contain data of track 2 so is not a good validation data for both tracks.
@@ -142,10 +140,8 @@ In the next figure we can see the histogram after remove images when exceded 500
 Finally after augmentate data in bins which have less images we obtain the next histogram:
 ![alt text][image10]
 
-To augment the dataset, we use three different methods, firs move images, second augmentate brightness and third add random shadows, this third method was inpired in this posts:
-[Vivek Yadav](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb)
-/[Jeremy Shannon](https://medium.com/udacity/udacity-self-driving-car-nanodegree-project-3-behavioral-cloning-446461b7c7f9#.mh6z0fpez)
-.
+To augment the dataset, we use three different methods, firs move images, second augmentate brightness and third add random shadows, this third method was inpired in the next post:
+[Vivek Yadav](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb).
 
 First method consist in move image with a displacement. It can be vertical and horizontal. When horizontal displacement is added is necesary to compensate the measuremt. Experimentaly a value of 0.0001 per pixel was used. In the next images we can see an image displaced compared with the previous one. (code line !!)
 
