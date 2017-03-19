@@ -249,7 +249,7 @@ for i in range(len(n_Count)):
     bin_s = bins[i+1]
     for fn,me,inf in zip(file_names,measurements,info):    
         if n_Count[i]>0:
-            if ((me>bin_i)and(me<=bin_s)):
+            if ((me>=bin_i)and(me<bin_s)):
                 file_names2.append(fn)        
                 measurements2.append(me)        
                 info2.append(inf)
