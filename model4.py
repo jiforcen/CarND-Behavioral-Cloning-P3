@@ -116,7 +116,8 @@ lines= []
 base_dir = os.path.dirname(os.path.abspath(__file__))
 filename_train_log = base_dir + '/data copia/driving_log.csv'
 filename_train_path = base_dir + '/data copia/IMG/'
-
+filename_train_log = base_dir + '/data/driving_log.csv'
+filename_train_path = base_dir + '/data/IMG/'
 
 with open(filename_train_log) as csvfile:
     reader = csv.reader(csvfile)
@@ -162,12 +163,12 @@ for line in lines:
         measurements.append(-steering_left)
         measurements.append(-steering_right)
 
-'''
+
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-'''
+
 n, bins = np.histogram(measurements, 100)
 
 
@@ -197,12 +198,12 @@ for i in range(len(n_Count)):
 file_names = file_names2
 measurements = measurements2
 info = info2
-'''
+
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-'''
+
 n, bins = np.histogram(measurements, 100)
 
 aditional_file_names = []
