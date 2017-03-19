@@ -36,7 +36,7 @@ def act_n_hist(n,bins,steering):
 def random_shadow(image):
     col_1 = 320*np.random.uniform()
     col_2 = 320*np.random.uniform()
-    shadow = 10 + 10*np.random.uniform()
+    shadow = 10 + 20*np.random.uniform()
     mask = 0*image[:,:,2]
     image = np.array(image, dtype = np.float64)
 
@@ -85,7 +85,7 @@ def change_brightness(image):
     cv2.imwrite('imagePrevB.png',imp)
     '''
     image = np.array(image, dtype = np.float64)
-    image[:,:,2] = image[:,:,2]*(0.5+np.random.uniform())
+    image[:,:,2] = image[:,:,2]*(0.25+1.5*np.random.uniform())
     image[:,:,2][image[:,:,2]>255]  = 255
     image = np.array(image, dtype = np.uint8)
     '''
@@ -116,8 +116,8 @@ lines= []
 base_dir = os.path.dirname(os.path.abspath(__file__))
 filename_train_log = base_dir + '/data copia/driving_log.csv'
 filename_train_path = base_dir + '/data copia/IMG/'
-#filename_train_log = base_dir + '/data/driving_log.csv'
-#filename_train_path = base_dir + '/data/IMG/'
+filename_train_log = base_dir + '/data/driving_log.csv'
+filename_train_path = base_dir + '/data/IMG/'
 
 with open(filename_train_log) as csvfile:
     reader = csv.reader(csvfile)
@@ -393,7 +393,7 @@ model.compile(loss = 'mse', optimizer = 'adam')
 
 history_object = model.fit_generator(train_generator, samples_per_epoch=
             len(measurements), validation_data=validation_generator,
-            nb_val_samples=8030, nb_epoch=20, verbose=1)
+            nb_val_samples=8030, nb_epoch=50, verbose=1)
 
 model.save('model5.h5')
 print('Finished correctly')
