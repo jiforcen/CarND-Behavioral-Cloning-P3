@@ -1,5 +1,5 @@
-#**Behavioral Cloning** 
-
+**Behavioral Cloning Project**
+---
 ##Writeup report
 ---
 
@@ -41,7 +41,7 @@ My project includes the following files:
 * writeup_report.md summarizing the results
 
 ####2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+Using the Udacity provided simulator and my drive.py file. The car can be driven autonomously around the track by executing 
 ```sh
 python drive.py 'model.h5'
 ```
@@ -53,7 +53,7 @@ It will output the file model.h5 with the trained model.
 
 ####3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. This file shows the pipeline used for training and validating the model, and it contains comments to explain how the code works.
 
 ###Model Architecture and Training Strategy
 
@@ -63,18 +63,16 @@ In the begining models like LeNet were tested, but quite forward Nvidia network 
 
 Car tend to go out off the track until good aproach was applied. Balanced data was one of the keys of the project, because in data aquisition are too much images with steering near to 0, if we train the model with this data we will have a biased model, probably with a good value in error loss, but bad in driving.
 
-Also all images were equlized before fed to the neural network.
-
 Different images sets were used to train the model during the set-up process. 
-First data acquired manually was used to train the model and data from udacity was used for validation. Later when data of track 2 was acquired, all data was split into train dataset and validation dataset because udacity data doesn´t contain data of track 2 so is not a good validation data for both tracks.
+First, data acquired manually was used to train the model and data from udacity was used for validation. Later when data of track 2 was acquired, all data was split into train dataset and validation dataset, because udacity data doesn´t contain data of track 2 so is not a good validation data for both tracks.
 
-Lot of driving test were made to check how well the car was driving around both tracks. There were a few spots where the vehicle fell off the track to improve the driving behavior in these cases data of these areas were collected.
+Lots of driving test were made to check how well the car was driving around both tracks. There were a few spots where the vehicle fell off the track to improve the driving behavior in these cases data of these areas were collected.
 
 At the end of the process, the vehicle is able to drive autonomously around both tracks without leaving the road. Track one is completed at 30mph and track two at 20mph.
 
 My model consists of a convolution neural network inspired in Nvidia neural network [Nvidia NN](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) in the next table al the layers are described:
 
-(model.py lines !!-!!) 
+(model.py lines 352-372) 
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -104,12 +102,12 @@ My model consists of a convolution neural network inspired in Nvidia neural netw
 | Dropout					|	0.2	dropout 				|
 | Fully connected	layer	| input 10, output 1.        				|
 
-Images are cropped and equalized before fed into the model, also data is normalized in the model using a Keras lambda layer (code line !!). 
+Images are cropped and equalized before fed into the neural network (code line 285-290), also data is normalized in the model using a Keras lambda layer (code line 354). 
 After each convolution layer a RELU layer is included to introduce nonlinearity, also Dropout layer is introduced to prevent overfitting.
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers after each layer to reduce overfitting (model.py lines 21). To ensure that model was not overfitting datataset is split in train dataset and validation dataset. Also in the next picture we can see a graph which represents loss vs epochs for train and validation datasets.
+The model contains dropout layers after each layer to reduce overfitting. To ensure that model was not overfitting datataset is split in train dataset and validation dataset. Also in the next picture we can see a graph which represents loss vs epochs for train and validation datasets.
 
 ![alt text][image1]
 
@@ -143,17 +141,17 @@ Finally after augmentate data in bins which have less images we obtain the next 
 To augment the dataset, we use three different methods, firs move images, second augmentate brightness and third add random shadows, this third method was inpired in the next post:
 [Vivek Yadav](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb).
 
-First method consist in move image with a displacement. It can be vertical and horizontal. When horizontal displacement is added is necesary to compensate the measuremt. Experimentaly a value of 0.0001 per pixel was used. In the next images we can see an image displaced compared with the previous one. (code line !!)
+First method consist in move image with a displacement. It can be vertical and horizontal. When horizontal displacement is added is necesary to compensate the measuremt. Experimentaly a value of 0.0001 per pixel was used. In the next images we can see an image displaced compared with the previous one. (code line 67)
 
 ![alt text][image6]
 ![alt text][image7]
 
-Second method is commonly used in image augmentation and consists in vary the brightness of the image. We can see an image with different brightnes compared with the previous one. (code line !!)
+Second method is commonly used in image augmentation and consists in vary the brightness of the image. We can see an image with different brightnes compared with the previous one. (code line 60)
 
 ![alt text][image4]
 ![alt text][image5]
 
-This third method consists in add to the image random shadows these is also useful to help the model to generalize. We can see an image with different brightnes compared with the previous one. (code line !!)
+This third method consists in add to the image random shadows these is also useful to help the model to generalize. We can see an image with different brightnes compared with the previous one. (code line 30)
 
 ![alt text][image2]
 ![alt text][image3]
@@ -163,3 +161,5 @@ This third methods are applied in each aditional image of image augmentation. Va
 After this process 49973 images are fed tho the neural network. Images are randomly shuffled, 80% for the data set and 20% to the validation set. 
 
 In the trainning process 50 epochs were executed and 256 images per batch to feed the model. As we can see in the image of "model mean squared error loss", error loss in model with 50 epochs is stablished. Also in the videos atached we can see how car drives in both tracks.
+[Video1](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb)/
+[Video2](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb).
