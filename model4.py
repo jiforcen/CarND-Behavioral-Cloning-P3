@@ -299,11 +299,15 @@ def generator_train(file_names, measurements, info, batch_size):
                     image = cv2.flip(image,1)
                
                 if ((inf==3)or(inf==4)):
+                    '''
                     if (np.random.uniform())>0.5:
                         image = change_brightness(image)
                     if (np.random.uniform())>0.6:
                         image = random_shadow(image)
-                
+                    '''
+                    image = change_brightness(image)
+                    image = random_shadow(image)
+
                 image[:,:,2] = cv2.equalizeHist(image[:,:,2])
 
                 if ((inf==3)or(inf==4)):
@@ -344,10 +348,10 @@ def generator_valid(file_names, measurements, info, batch_size):
                         image = random_shadow(image)
                 
                 image[:,:,2] = cv2.equalizeHist(image[:,:,2])
-
+                '''
                 if ((inf==3)or(inf==4)):
                     image,measurement = random_move(image,measurement)              
- 
+                 '''
                 image = image[70:136,:,:]
                 image = cv2.resize(image,(200, 66), interpolation = cv2.INTER_AREA)
                 im.append(image)
