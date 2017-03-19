@@ -163,12 +163,12 @@ for line in lines:
         measurements.append(-steering_left)
         measurements.append(-steering_right)
 
-'''
+
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-'''
+
 n, bins = np.histogram(measurements, 100)
 
 
@@ -198,12 +198,12 @@ for i in range(len(n_Count)):
 file_names = file_names2
 measurements = measurements2
 info = info2
-'''
+
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-'''
+
 n, bins = np.histogram(measurements, 100)
 
 aditional_file_names = []
@@ -263,12 +263,12 @@ info = info2
 
 
 #####
-'''
+
 plt.figure(figsize=(10,5))
 plt.title("Distribution of images per class")
 (n, bins, patches) = plt.hist(measurements, 100)
 plt.show()
-'''
+
 n, bins = np.histogram(measurements, 100)
 
 from sklearn.model_selection import train_test_split
