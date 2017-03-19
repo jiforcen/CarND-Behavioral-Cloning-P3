@@ -71,7 +71,7 @@ Lot of driving test were made to check how well the car was driving around both 
 
 At the end of the process, the vehicle is able to drive autonomously around both tracks without leaving the road. Track one is completed at 30mph and track two at 20mph.
 
-My model consists of a convolution neural network inspired in nvidia neural network [geometric transformations](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) in the next table al the layers are described:
+My model consists of a convolution neural network inspired in Nvidia neural network [Nvidia NN](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) in the next table al the layers are described:
 
 (model.py lines !!-!!) 
 
@@ -117,13 +117,16 @@ Without this dropout layers the model tends to overfit, also L2 regularization l
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25). But all parameters were tune experimentally like augmentation values (displacement, brightnes), number of images to feed the model, number of images per batch, epochs, dropout values.
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from sides of the road, driving in counter sense. All in both tracks driving at speed similar to test speed.
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from sides of the road and driving in counter sense.
+Driving data was acquired in both tracks driving at speed similar to the desired speed in the test.
 
-For details about how I created the training data, see the next section. 
+For details about how I created the training data, see the next section.
+
+As I told before, one of the keys of this project is having a balanced dataset.
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
@@ -138,6 +141,11 @@ I then recorded the vehicle recovering from the left side and right sides of the
 Then I repeated this process on track two in order to get more data points.
 
 To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+
+
+[Vivek Yadav](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb)
+[Jeremy Shannon](https://medium.com/udacity/udacity-self-driving-car-nanodegree-project-3-behavioral-cloning-446461b7c7f9#.mh6z0fpez)
+
 
 ![alt text][image6]
 ![alt text][image7]
