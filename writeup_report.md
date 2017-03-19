@@ -163,12 +163,8 @@ This third method consists in add to the image random shadows these is also usef
 ![alt text][image2]
 ![alt text][image3]
 
-This third methods are applied one aditional image is needed for image augmentation. Variation in each step is randomly selected.
-Etc ....
+This third methods are applied in each aditional image of image augmentation. Variation in each step is randomly selected.
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+After this process 49973 images are fed tho the neural network. Images are randomly shuffled, 80% for the data set and 20% to the validation set. 
 
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+In the trainning process 50 epochs were executed and 256 images per batch to feed the model. As we can see in the image of "model mean squared error loss", error loss in model with 50 epochs is stablished. Also in the videos atached we can see how car drives in both tracks.
