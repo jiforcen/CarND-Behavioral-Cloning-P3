@@ -393,7 +393,7 @@ model.compile(loss = 'mse', optimizer = 'adam')
 
 history_object = model.fit_generator(train_generator, samples_per_epoch=
             len(measurements), validation_data=validation_generator,
-            nb_val_samples=8030, nb_epoch=100, verbose=1)
+            nb_val_samples=8030, nb_epoch=20, verbose=1)
 
 model.save('model5.h5')
 print('Finished correctly')
