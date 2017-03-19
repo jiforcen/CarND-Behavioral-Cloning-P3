@@ -144,8 +144,7 @@ Finally after augmentate data in bins which have less images we obtain the next 
 
 To augment the dataset, we use three different methods, firs move images, second augmentate brightness and third add random shadows, this third method was inpired in this posts:
 [Vivek Yadav](https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9#.lnrrf0vcb)
--
-[Jeremy Shannon](https://medium.com/udacity/udacity-self-driving-car-nanodegree-project-3-behavioral-cloning-446461b7c7f9#.mh6z0fpez)
+/[Jeremy Shannon](https://medium.com/udacity/udacity-self-driving-car-nanodegree-project-3-behavioral-cloning-446461b7c7f9#.mh6z0fpez)
 .
 
 First method consist in move image with a displacement. It can be vertical and horizontal. When horizontal displacement is added is necesary to compensate the measuremt. Experimentaly a value of 0.0001 per pixel was used. In the next images we can see an image displaced compared with the previous one. (code line !!)
