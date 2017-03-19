@@ -16,12 +16,12 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./write_up_images/ErrorLoss.png "Error Loss"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image2]: ./write_up_images/imagePrev.png ""
+[image3]: ./write_up_images/imagePost.png ""
+[image4]: ./write_up_images/imagePrevB.png ""
+[image5]: ./write_up_images/imagePostB.png ""
+[image6]: ./write_up_images/imagePrevM.png "Image"
+[image7]: ./write_up_images/imagePostM.png "Image"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -56,7 +56,22 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network inspired in nvidia convnet [geometric transformations](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) in the next table al the layers are described:
+My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+
+In the begining models like LeNet were tested, but quite forward Nvidia network architecture was tested. It was necesary add Dropout layers (Also L2 regularization was tested) to prevent overfitting.
+
+Car tend to go out off the track until good aproach was applied. Balanced data was one of the keys of the project, because in data aquisition are too much images with steering near to 0, if we train the model with this data we will have a biased model, probably with a good value in error loss, but bad in driving.
+
+Also all images were equlized before fed to the neural network
+
+Different images sets were used to train the model during the set-up proccess. 
+First data acquired manually was used to train the model and data from udacity was used for validation. Later when data of track 2 was acquired, all data was split into train dataset and validation dataset because udacity data doesn´t contain data of track 2 so is not a good validation data for both tracks.
+
+Lot of driving test were made to check how well the car was driving around both tracks. There were a few spots where the vehicle fell off the track to improve the driving behavior in these cases data of these areas were collected.
+
+At the end of the process, the vehicle is able to drive autonomously around both tracks without leaving the road. Track one is completed at 30mph and track two at 20mph.
+
+My model consists of a convolution neural network inspired in nvidia neural network [geometric transformations](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) in the next table al the layers are described:
 
 (model.py lines !!-!!) 
 
@@ -109,35 +124,6 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from sides of the road, driving in counter sense. All in both tracks driving at speed similar to test speed.
 
 For details about how I created the training data, see the next section. 
-
-###Model Architecture and Training Strategy
-
-####1. Solution Design Approach
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
-In the begining models like LeNet were tested, but quite forward Nvidia network architecture was tested. It was necesary add Dropout layers (Also L2 regularization was tested) to prevent overfitting.
-
-Car tend to go out off the track until good aproach was applied. Balanced data was one of the keys of the project, because in data aquisition are too much images with steering near to 0, if we train the model with this data we will have a biased model, probably with a good value in error loss, but bad in driving.
-
-Also all images were equlized before fed to the neural network
-
-Different images sets were used to train the model during the set-up proccess. 
-First data acquired manually was used to train the model and data from udacity was used for validation. Later when data of track 2 was acquired, all data was split into train dataset and validation dataset because udacity data doesn´t contain data of track 2 so is not a good validation data for both tracks.
-
-Lot of driving test were made to check how well the car was driving around both tracks. There were a few spots where the vehicle fell off the track to improve the driving behavior in these cases data of these areas were collected.
-
-At the end of the process, the vehicle is able to drive autonomously around both tracks without leaving the road. Track one is completed at 30mph and track two at 20mph.
-
-####2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
-
-####3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
