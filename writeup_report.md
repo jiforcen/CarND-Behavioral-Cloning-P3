@@ -161,5 +161,5 @@ This third methods are applied in each aditional image of image augmentation. Va
 After this process 49973 images are fed tho the neural network. Images are randomly shuffled, 80% for the data set and 20% to the validation set. 
 
 In the trainning process 50 epochs were executed and 256 images per batch to feed the model. As we can see in the image of "model mean squared error loss", error loss in model with 50 epochs is stablished. Also in the videos atached we can see how car drives in both tracks.
-[Video1](https://github.com/jiforcen/CarND-Behavioral-Cloning-P3/blob/master/run1.mp4)/
+[Video1](https://github.com/jiforcen/CarND-Behavioral-Cloning-P3/blob/master/run1.mp4) /
 [Video2](https://github.com/jiforcen/CarND-Behavioral-Cloning-P3/blob/master/run2.mp4).
